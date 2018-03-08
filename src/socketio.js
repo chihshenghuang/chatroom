@@ -28,14 +28,14 @@ function CreateSocketio(server) {
             addedUser = true
             console.log('server all ', allUsers)
             socket.emit('login', {
-                numUsers: numUsers
+                numUsers: SocketioData.numUsers
             })
 
             // echo globally (all clients) that a person has connected
             socket.broadcast.emit('user joined', {
                 username: socket.username,
-                numUsers: numUsers,
-                allUsers: allUsers
+                numUsers: SocketioData.numUsers,
+                allUsers: SocketioData.allUsers
             })
         })
 
@@ -55,8 +55,8 @@ function CreateSocketio(server) {
                     //echo globally that this client has left
                 socket.broadcast.emit('user left', {
                     username: socket.username,
-                    numUsers: numUsers,
-                    allUsers: allUsers
+                    numUsers: SocketioData.numUsers,
+                    allUsers: SocketioData.allUsers
                 })
             }
         })

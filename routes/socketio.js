@@ -4,7 +4,7 @@ var io = require('../src/socketio');
 
 router.get('/', (req, res, next) => {
     console.log('socketio Data', io.SocketioData)
-    res.send('socketio')
+    res.send(io.SocketioData)
 });
 
 module.exports = router;
