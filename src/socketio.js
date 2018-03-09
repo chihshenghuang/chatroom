@@ -7,6 +7,8 @@ const SocketioData = {
 
 function CreateSocketio(server) {
     const io = require('socket.io')(server)
+    const room1 = io.of('/room1')
+
     io.on('connection', (socket) => {
         // when the client emits 'new message', this listens and executes
         let addedUser = false
@@ -37,6 +39,28 @@ function CreateSocketio(server) {
                 numUsers: SocketioData.numUsers,
                 allUsers: SocketioData.allUsers
             })
+
+        })
+
+        socket.on('create room1', (username) => {
+            socket.username = username
+            socket.room = 'room1'
+            socket.join('room1')
+            socket.broadcast.to('room1', 'join room1')
+        })
+
+        socket.on('room chat', (data) => {
+            io.sockets.in(socket.room).emit('new room chat', {
+                username: socket.username,
+                message: data
+            })
+        })
+
+        socket.on('create room2', (username) => {
+            socket.username = username
+            socket.room = 'room2'
+            socket.join('room2')
+            socket.broadcast.to('room2', 'join room2')
         })
 
         // when the client emits 'typing', we broadcast it to others

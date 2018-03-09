@@ -6,8 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
-var socketio = require('./routes/socketio');
 var app = express();
 
 // view engine setup
@@ -26,9 +24,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-//app.use('/', index);
-app.use('/users', users);
-app.use('/socket', socketio)
+app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
