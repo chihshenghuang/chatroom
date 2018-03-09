@@ -231,6 +231,13 @@ $(function() {
         updateTyping()
     })
 
+    $('#create').click((evt) => {
+        $('input[name="roomName"]').val(JSON.stringify({ username }))
+        $('#createroomForm').submit()
+        evt.stopPropagation()
+        evt.preventDefault()
+    })
+
     // Click events
 
     // Focus input when clicking anywhere on login page
@@ -240,26 +247,9 @@ $(function() {
 
     // Focus input when clicking on the message input's border
     $inputMessage.click(() => {
-        $inputMessage.focus()
-    })
-
-    $('.createroom1').click(() => {
-        socket.emit('create room1', username)
-    })
-
-    $('.join1').click(() => {
-        socket.emit('create room1', username)
-    })
-
-    $('.createroom2').click(() => {
-        socket.emit('create room2', username)
-    })
-
-    $('.join2').click(() => {
-        socket.emit('create room2', username)
-    })
-
-    // Socket events
+            $inputMessage.focus()
+        })
+        // Socket events
 
     // Whenever the server emit's 'login', log the login message
     socket.on('login', (data) => {
