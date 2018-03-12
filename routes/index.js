@@ -15,9 +15,14 @@ router.get('/chats', (req, res, next) => {
 
 router.post('/createroom', (req, res, next) => {
     let username = JSON.parse(req.body.roomName).username;
-    console.log(req.body.roomName)
     let content = { username: username };
-    res.render('privateRoom', { title: username });
+    res.render('room', { title: req.body.roomName });
+});
+
+router.post('/joinroom/:room', (req, res, next) => {
+    let username = JSON.parse(req.body.roomName).username;
+    console.log(username)
+    res.render('room', { username: username })
 });
 
 router.post('/login', (req, res, next) => {

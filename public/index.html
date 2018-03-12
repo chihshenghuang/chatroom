@@ -8,24 +8,33 @@
 </head>
 
 <body>
-    <ul class="pages">
-        <li class="chat page">
-            <div class="chatArea">
-                <ul class="messages"></ul>
-            </div>
+    <div class="Login">
+        <ul class="pages">
             <button class="createroom" id="create">Create Room</button>
             <form id="createroomForm" action="http://localhost:3000/createroom" method="POST">
                 <input name="roomName" type='hidden' value='Submit'>
             </form>
-            <input class="inputMessage" placeholder="Type here..." />
-        </li>
-        <li class="login page">
-            <div class="form">
-                <h3 class="title">What's your nickname?</h3>
-                <input class="usernameInput" type="text" maxlength="14" />
-            </div>
-        </li>
-    </ul>
+            <button class="createroom" id="room1">Join Room1</button>
+            <form id="room1Form" method="POST" action="http://localhost:3000/joinroom/room1">
+                <input name="roomName" type='hidden' value='Submit'>
+            </form>
+            <button class="createroom" id="room2">Join Room2</button>
+            <form id="room2Form" method="POST" action="http://localhost:3000/joinroom/room2">
+                <input name="roomName" type='hidden' value='Submit'>
+            </form>
+            <button class="createroom" id="room3">Join Room3</button>
+            <form id="room3Form" method="POST" action="http://localhost:3000/joinroom/room3">
+                <input name="roomName" type='hidden' value='Submit'>
+            </form>
+            </li>
+            <li class="login page">
+                <div class="form">
+                    <h3 class="title">What's your nickname?</h3>
+                    <input class="usernameInput" type="text" maxlength="14" />
+                </div>
+            </li>
+        </ul>
+    </div>
 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
