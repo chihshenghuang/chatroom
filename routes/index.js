@@ -30,7 +30,6 @@ router.get('/getRoomData', (req, res, next) => {
     res.send(io.SocketioData)
 });
 
-
 router.post('/login', (req, res, next) => {
     res.send(true);
 });
