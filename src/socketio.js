@@ -37,20 +37,9 @@ function CreateSocketio(server) {
             socket.username = username
             socket.room = room
             addedUser = true
+            socket.join(room)
+            socket.broadcast.to(socket.room, `new user joined ${room}`)
             console.log('server all ', SocketioData)
-
-            /*
-            socket.emit('login', {
-                numUsers: SocketioData.numUsers
-            })
-
-            // echo globally (all clients) that a person has connected
-            socket.broadcast.emit('user joined', {
-                username: socket.username,
-                numUsers: SocketioData.numUsers,
-                allUsers: SocketioData.allUsers
-            })
-            */
         })
 
         socket.on('create room', (username) => {
@@ -62,6 +51,7 @@ function CreateSocketio(server) {
         })
         socket.on('room chat', (data) => {
             console.log('server new room chat: ', socket.room)
+            console.log('server new room chat: ', data)
 
             io.sockets.in(socket.room).emit('new room chat', {
                 username: socket.username,
@@ -95,8 +85,8 @@ function CreateSocketio(server) {
                     //echo globally that this client has left
                 socket.broadcast.emit('user left', {
                     username: socket.username,
-                    numUsers: SocketioData.numUsers,
-                    allUsers: SocketioData.allUsers
+                    numUsers: SocketioData[socket.room].numUsers,
+                    allUsers: SocketioData[socket.room].allUsers
                 })
             }
         })
