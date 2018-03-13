@@ -13,6 +13,7 @@ $(document).ready(() => {
             // Initialize variables
         let $window = $(window)
         let username = null
+        let roomname = null
         let connected = true
         let typing = false
         let lastTypingTime
@@ -34,6 +35,7 @@ $(document).ready(() => {
         function setUsername() {
 
             username = $('.username').text();
+            roomname = $('.roomname').text();
             console.log('username: ', username)
                 // If the username is valid
             if (username) {
@@ -41,8 +43,10 @@ $(document).ready(() => {
                 $currentInput = $inputMessage.focus()
 
                 // Tell the server your username
-                socket.emit('add user', username)
+                socket.emit('add user', username, roomname)
+                socket.emit('join room', username, roomname)
             }
+
         }
         setUsername()
             // Sends a chat message

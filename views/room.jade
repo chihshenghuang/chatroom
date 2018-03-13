@@ -1,7 +1,8 @@
 extends layout
 
 block content
-    h1.username #{username}
+    h1.username(type=hidden) #{username}
+    h1.roomname(type=hidden) #{room}
     ul.pages
         li.chat.page
             div.chatArea

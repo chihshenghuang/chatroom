@@ -1,4 +1,10 @@
-let SocketioData = {}
+let SocketioData = {
+    room4: {},
+    room5: {},
+    room6: {},
+    room7: {},
+    room8: {}
+}
 
 function CreateSocketio(server) {
     const io = require('socket.io')(server)
@@ -20,11 +26,12 @@ function CreateSocketio(server) {
             if (SocketioData[room] === undefined) {
                 SocketioData[room] = {
                     numUsers: 1,
-                    allUsers: [username]
+                    allUsers: {}
                 }
+                SocketioData[room].allUsers[username] = 'Member'
             } else {
                 ++SocketioData[room].numUsers
-                SocketioData[room].allUsers.push(username)
+                SocketioData[room].allUsers[username] = 'Member'
             }
             // we store the username in the socket session for this client
             socket.username = username
@@ -47,19 +54,25 @@ function CreateSocketio(server) {
         })
 
         socket.on('create room', (username) => {
-            let userRoom = `${username}'s Room`
+            let room = `${username}'s Room`
             socket.username = username
-            socket.room = userRoom
-            socket.join(userRoom)
-            socket.broadcast.to(userRoom, `new user joined ${userRoom}`)
+            socket.room = room
+            socket.join(room)
+            socket.broadcast.to(room, `new user joined ${room}`)
         })
-
         socket.on('room chat', (data) => {
-            console.log('server new room chat')
+            console.log('server new room chat: ', socket.room)
+
             io.sockets.in(socket.room).emit('new room chat', {
                 username: socket.username,
                 message: data
             })
+        })
+        socket.on('join room', (username, room) => {
+            socket.username = username
+            socket.room = room
+            socket.join(room)
+            socket.broadcast.to(socket.room, `new user joined ${room}`)
         })
 
         socket.on('get username', () => {

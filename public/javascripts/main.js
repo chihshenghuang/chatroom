@@ -237,6 +237,7 @@ $(function() {
         $('#create').click((evt) => {
             $('input[name="roomName"]').val(JSON.stringify({ username }))
             $('#createroomForm').submit()
+            socket.emit('create room', username)
             evt.stopPropagation()
             evt.preventDefault()
         })
@@ -297,6 +298,7 @@ $(function() {
         })
 
         socket.on('new room chat', (data) => {
+            console.log('main.js')
             addChatMessage(data)
         })
 
