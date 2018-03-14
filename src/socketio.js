@@ -36,6 +36,18 @@ function CreateSocketio(server) {
             })
         })
 
+        socket.on('get chats', () => {
+            // console.log([12345, SocketioData])
+            socket.broadcast.emit('get chats', SocketioData)
+            socket.emit('get chats', SocketioData)
+            // setTimeout(function(){
+            //     socket.emit('get chats', SocketioData)
+            // }, 3000)
+            // setTimeout(function(){
+                // socket.emit('get chats', SocketioData)
+            // }, 3000);
+        })
+
         socket.on('add user', (username, room) => {
             if (addedUser) return
             if (SocketioData[room] === undefined) {
@@ -68,7 +80,7 @@ function CreateSocketio(server) {
             console.log('server new room chat: ', socket.room)
             console.log('server new room chat: ', data)
 
-            io.sockets.in(socket.room).emit('new room chat', {
+            io.sockets.in(socket.room).emit('room chat', {
                 username: socket.username,
                 message: data
             })

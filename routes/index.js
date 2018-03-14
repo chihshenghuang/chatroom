@@ -37,12 +37,19 @@ router.post('/login', (req, res, next) => {
 		console.log(username)
 		if(userTable.get(username) !== undefined){
 			console.log('username is used!')
-			res.send('The username is already used!');
+			res.status(400).send({ message: 'The username is already used!'});
 		}
 		else{
 			userTable.set(username, 1)
 			res.send(true);
 		}
 });
+
+router.post('/logout', (req, res, next) => {
+    let username = req.body.username;
+    console.log(username)
+    userTable.delete(username)
+    res.send(true);
+})
 
 module.exports = router;
