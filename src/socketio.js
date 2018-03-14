@@ -1,9 +1,24 @@
 let SocketioData = {
-    room4: {},
-    room5: {},
-    room6: {},
-    room7: {},
-    room8: {}
+    room4: {
+			numUsers: 0,
+			allUsers: {}
+		},
+    room5: {
+			numUsers: 0,
+			allUsers: {}
+		},
+    room6: {
+			numUsers: 0,
+			allUsers: {}
+		},
+    room7: {
+			numUsers: 0,
+			allUses: {}
+		},
+    room8: {
+			numUsers: 0,
+			allUser: {}
+		}
 }
 
 function CreateSocketio(server) {
