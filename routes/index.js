@@ -2,6 +2,8 @@ let express = require('express');
 let router = express.Router();
 let io = require('../src/socketio');
 
+let userTable = new Map();
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
     res.render('index', { title: 'Express' });
@@ -31,7 +33,15 @@ router.get('/getRoomData', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-    res.send(true);
+		let username = req.body.user;
+		console.log(username)
+		if(userTable.get(username) !== undefined){
+			res.send('The username is already used!');
+		}
+		else{
+			userTable.set(username, 1)
+			res.send(true);
+		}
 });
 
 module.exports = router;
