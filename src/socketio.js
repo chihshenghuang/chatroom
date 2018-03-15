@@ -23,7 +23,6 @@ let SocketioData = {
 
 function CreateSocketio(server) {
     const io = require('socket.io')(server)
-    const room1 = io.of('/room1')
 
     io.on('connection', (socket) => {
         // when the client emits 'new message', this listens and executes
@@ -37,7 +36,6 @@ function CreateSocketio(server) {
         // })
 
         socket.on('get chats', () => {
-            // console.log([12345, SocketioData, socket])
             socket.emit('get chats', SocketioData)
             socket.broadcast.emit('get chats', SocketioData)
             // socket.to(socket.room).emit('get chats', SocketioData)
@@ -53,16 +51,17 @@ function CreateSocketio(server) {
 
         socket.on('join room', (username, room) => {
             // joinRoom(username, room)
+						console.log('socket id', socket.id)
             if (addedUser) return
             if (SocketioData[room] === undefined) {
                 SocketioData[room] = {
                     numUsers: 1,
                     allUsers: {}
                 }
-                SocketioData[room].allUsers[username] = 'Member'
+                SocketioData[room].allUsers[username] = socket.id
             } else {
                 ++SocketioData[room].numUsers
-                SocketioData[room].allUsers[username] = 'Member'
+                SocketioData[room].allUsers[username] = socket.id
             }
             // we store the username in the socket session for this client
             socket.username = username
@@ -80,13 +79,25 @@ function CreateSocketio(server) {
         //     // socket.broadcast.to(room, `new user joined ${room}`)
         // })
         socket.on('room chat', (data) => {
-            console.log('server new room chat: ', socket.room)
             console.log('server new room chat: ', data)
-
-            io.sockets.in(socket.room).emit('room chat', {
+						if(data.toWho === null){
+            	io.sockets.in(socket.room).emit('room chat', {
                 username: socket.username,
-                message: data
-            })
+                message: data.message
+            	})
+						}
+						else{
+							socket.to(SocketioData[socket.room].allUsers[data.toWho]).emit('room chat', {
+								username: socket.username,
+								message: data.message,
+								private: true
+							})
+							socket.emit('room chat', {
+								username: socket.username,
+								message: data.message,
+								private: true
+							})
+						}
         })
         // socket.on('join room', (username, room) => {
         //     socket.username = username
