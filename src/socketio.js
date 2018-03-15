@@ -28,18 +28,21 @@ function CreateSocketio(server) {
     io.on('connection', (socket) => {
         // when the client emits 'new message', this listens and executes
         let addedUser = false
-        socket.on('new message', (data) => {
-            // we tell the client to execute 'new message'
-            socket.broadcast.emit('new message', {
-                username: socket.username,
-                message: data
-            })
-        })
+        // socket.on('new message', (data) => {
+        //     // we tell the client to execute 'new message'
+        //     socket.broadcast.emit('new message', {
+        //         username: socket.username,
+        //         message: data
+        //     })
+        // })
 
         socket.on('get chats', () => {
-            // console.log([12345, SocketioData])
-            socket.broadcast.emit('get chats', SocketioData)
+            // console.log([12345, SocketioData, socket])
             socket.emit('get chats', SocketioData)
+            socket.broadcast.emit('get chats', SocketioData)
+            // socket.to(socket.room).emit('get chats', SocketioData)
+            // socket.emit('get chats', SocketioData)
+            // io.emit('get chats', SocketioData)
             // setTimeout(function(){
             //     socket.emit('get chats', SocketioData)
             // }, 3000)
@@ -48,7 +51,8 @@ function CreateSocketio(server) {
             // }, 3000);
         })
 
-        socket.on('add user', (username, room) => {
+        socket.on('join room', (username, room) => {
+            // joinRoom(username, room)
             if (addedUser) return
             if (SocketioData[room] === undefined) {
                 SocketioData[room] = {
@@ -65,17 +69,16 @@ function CreateSocketio(server) {
             socket.room = room
             addedUser = true
             socket.join(room)
-            socket.broadcast.to(socket.room, `new user joined ${room}`)
+            // socket.broadcast.to(socket.room, `new user joined ${room}`)
             console.log('server all ', SocketioData)
         })
 
-        socket.on('create room', (username) => {
-            let room = `${username}'s Room`
-            socket.username = username
-            socket.room = room
-            socket.join(room)
-            socket.broadcast.to(room, `new user joined ${room}`)
-        })
+        // socket.on('create room', (username) => {
+        //     // let room = `${username}'s Room`
+        //     // socket.username = username
+        //     joinRoom(username, username)
+        //     // socket.broadcast.to(room, `new user joined ${room}`)
+        // })
         socket.on('room chat', (data) => {
             console.log('server new room chat: ', socket.room)
             console.log('server new room chat: ', data)
@@ -85,23 +88,23 @@ function CreateSocketio(server) {
                 message: data
             })
         })
-        socket.on('join room', (username, room) => {
-            socket.username = username
-            socket.room = room
-            socket.join(room)
-            socket.broadcast.to(socket.room, `new user joined ${room}`)
-        })
+        // socket.on('join room', (username, room) => {
+        //     socket.username = username
+        //     socket.room = room
+        //     socket.join(room)
+        //     // socket.broadcast.to(socket.room, `new user joined ${room}`)
+        // })
 
-        socket.on('get username', () => {
-                console.log('server get user: ', socket.username)
-                socket.emit('send username', socket.username)
-            })
-            // when the client emits 'typing', we broadcast it to others
-        socket.on('typing', () => {
-            socket.broadcast.emit('stop typing', {
-                username: socket.username
-            })
-        })
+        // socket.on('get username', () => {
+        //         console.log('server get user: ', socket.username)
+        //         socket.emit('send username', socket.username)
+        //     })
+        //     // when the client emits 'typing', we broadcast it to others
+        // socket.on('typing', () => {
+        //     socket.broadcast.emit('stop typing', {
+        //         username: socket.username
+        //     })
+        // })
 
         // when the user disconnects.. perform this
         socket.on('disconnect', () => {
