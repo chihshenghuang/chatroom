@@ -1,5 +1,17 @@
 let SocketioData = {
-    room4: {
+    room1: {
+			numUsers: 0,
+			allUsers: {}
+		},
+    room2: {
+			numUsers: 0,
+			allUsers: {}
+		},
+    room3: {
+			numUsers: 0,
+			allUsers: {}
+		},
+		room4: {
 			numUsers: 0,
 			allUsers: {}
 		},
@@ -13,11 +25,15 @@ let SocketioData = {
 		},
     room7: {
 			numUsers: 0,
-			allUses: {}
+			allUsers: {}
 		},
     room8: {
 			numUsers: 0,
-			allUser: {}
+			allUsers: {}
+		},
+    room9: {
+			numUsers: 0,
+			allUsers: {}
 		}
 }
 
@@ -61,7 +77,8 @@ function CreateSocketio(server) {
                 SocketioData[room].allUsers[username] = socket.id
             } else {
                 ++SocketioData[room].numUsers
-                SocketioData[room].allUsers[username] = socket.id
+								SocketioData[room].allUsers = SocketioData[room].allUsers || {}
+								SocketioData[room].allUsers[username] = socket.id
             }
             // we store the username in the socket session for this client
             socket.username = username
@@ -122,10 +139,10 @@ function CreateSocketio(server) {
             if (addedUser) {
                 --SocketioData[socket.room].numUsers
                 delete SocketioData[socket.room].allUsers[socket.username]
-                console.log('disconnect', SocketioData)
+								console.log('disconnect', SocketioData)
                     //echo globally that this client has left
                 socket.broadcast.emit('user left', {
-                    username: socket.username,
+										username: socket.username,
                     numUsers: SocketioData[socket.room].numUsers,
                     allUsers: SocketioData[socket.room].allUsers
                 })

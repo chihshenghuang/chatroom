@@ -33,6 +33,7 @@ router.get('/getRoomData', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+		console.log('/login')
 		let username = req.body.username;
 		console.log(username)
 		if(userTable.get(username) !== undefined){
